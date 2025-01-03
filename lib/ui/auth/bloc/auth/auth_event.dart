@@ -8,3 +8,7 @@ sealed class AuthEvent {
 class InitialAuthEvent extends AuthEvent {
   const InitialAuthEvent();
 }
+
+class SingInAnonymouslyEvent extends AuthEvent {
+  const SingInAnonymouslyEvent();
+}

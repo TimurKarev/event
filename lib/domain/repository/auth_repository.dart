@@ -4,4 +4,6 @@ abstract class AuthRepository {
   Stream<UserApp> get getAuthUser;
 
   Future<void> signOut();
+
+  Future<UserApp> signInAnonymously();
 }

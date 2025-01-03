@@ -17,4 +17,14 @@ class AuthRepositoryFire implements AuthRepository {
     // TODO: implement signOut
     throw UnimplementedError();
   }
+
+  @override
+  Future<UserApp> signInAnonymously() async {
+    final user = await FirebaseAuth.instance.signInAnonymously();
+
+    if (user.user?.uid case final String uid) {
+      return UserAnonymous(uid: uid);
+    }
+    return const UserUnregistered();
+  }
 }

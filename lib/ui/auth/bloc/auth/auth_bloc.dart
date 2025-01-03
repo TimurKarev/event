@@ -10,8 +10,8 @@ class AuthBloc extends Bloc<AuthEvent, UserApp> {
     required this.authRepository,
   }) : super(const UserUnregistered()) {
     on<InitialAuthEvent>(_onInit);
+    on<SingInAnonymouslyEvent>(_onSingInAnonymously);
   }
-
   final AuthRepository authRepository;
 
   Future<void> _onInit(
@@ -22,5 +22,13 @@ class AuthBloc extends Bloc<AuthEvent, UserApp> {
       authRepository.getAuthUser,
       onData: (d) => d,
     );
+  }
+
+  Future<void> _onSingInAnonymously(
+    SingInAnonymouslyEvent event,
+    Emitter<UserApp> emit,
+  ) async {
+    final user = await authRepository.signInAnonymously();
+    emit(user);
   }
 }
