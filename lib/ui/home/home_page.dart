@@ -1,5 +1,9 @@
-import 'package:firebase_vertexai/firebase_vertexai.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:event/data/repository/flows_fire_extensions.dart';
+import 'package:event/domain/repository/flows.dart';
+import 'package:event/ui/settings/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,12 +13,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _textContriller = TextEditingController();
+  final _textController = TextEditingController();
   String _answer = '';
 
   @override
   void dispose() {
-    _textContriller.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -25,6 +29,20 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
+            BlocBuilder<SettingsBloc, SettingsState>(
+              builder: (context, state) {
+                if (state.canChangeFlowLink) {
+                  return TextField(
+                    onChanged: (port) => context.read<SettingsBloc>().add(
+                          FlowsPortChangesSettingsEvent(
+                            port,
+                          ),
+                        ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
             Expanded(
               child: Text(_answer),
             ),
@@ -32,29 +50,44 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _textContriller,
+                    controller: _textController,
                     onChanged: (value) => setState(() {}),
                   ),
                 ),
-                IconButton(
-                  onPressed: _textContriller.text.isNotEmpty
-                      ? () async {
-                          final model = FirebaseVertexAI.instance
-                              .generativeModel(model: 'gemini-1.5-flash');
-                          final prompt = [
-                            Content.text(_textContriller.text),
-                          ];
-// To generate text output, call generateContent with the text input
-                          final response = await model.generateContent(prompt);
-                          if (response.text case final String text
-                              when text.isNotEmpty) {
-                            setState(() {
-                              _answer = text;
-                            });
-                          }
-                        }
-                      : null,
-                  icon: const Icon(Icons.search),
+                BlocBuilder<SettingsBloc, SettingsState>(
+                  builder: (context, state) {
+                    return IconButton(
+                      onPressed: _textController.text.isNotEmpty
+                          ? () async {
+                              try {
+                                final str =
+                                    AiFlows.getParamsFromString.getLocalLink(
+                                  state.flowLink,
+                                );
+                                HttpsCallable callable = FirebaseFunctions
+                                    .instance
+                                    .httpsCallableFromUrl(
+                                  state.canChangeFlowLink &&
+                                          state.flowLink.isNotEmpty
+                                      ? str
+                                      : AiFlows.getParamsFromString.severLink,
+                                );
+
+                                final result =
+                                    await callable.call<Map<String, dynamic>?>(
+                                        _textController.text);
+
+                                setState(() {
+                                  _answer = result.data?['result'] ?? '';
+                                });
+                              } catch (e) {
+                                print(e.toString());
+                              }
+                            }
+                          : null,
+                      icon: const Icon(Icons.search),
+                    );
+                  },
                 ),
               ],
             ),

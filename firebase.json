@@ -1,1 +1,24 @@
-{"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"ai-event-app","configurations":{"web":"1:1050623327141:web:717c3c24613436a728c64c"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ai-event-app",
+          "configurations": {
+            "web": "1:1050623327141:web:717c3c24613436a728c64c"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}
