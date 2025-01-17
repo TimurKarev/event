@@ -1,6 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:event/data/repository/flows_fire_extensions.dart';
 import 'package:event/domain/repository/flows.dart';
+import 'package:event/ui/auth/bloc/auth/auth_bloc.dart';
 import 'package:event/ui/settings/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => context.read<AuthBloc>().add(
+                  const SignOutAuthEvent(),
+                ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

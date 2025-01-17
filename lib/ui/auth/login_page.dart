@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
                   ? const CircularProgressIndicator()
                   : const Text('LoginPage'),
               onPressed: () => context.read<AuthBloc>().add(
-                    const SingInAnonymouslyEvent(),
+                    const SingInAnonymouslyAuthEvent(),
                   ),
             );
           },

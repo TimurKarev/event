@@ -9,6 +9,10 @@ class InitialAuthEvent extends AuthEvent {
   const InitialAuthEvent();
 }
 
-class SingInAnonymouslyEvent extends AuthEvent {
-  const SingInAnonymouslyEvent();
+class SingInAnonymouslyAuthEvent extends AuthEvent {
+  const SingInAnonymouslyAuthEvent();
+}
+
+class SignOutAuthEvent extends AuthEvent {
+  const SignOutAuthEvent();
 }

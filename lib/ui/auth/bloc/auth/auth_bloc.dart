@@ -12,7 +12,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.authRepository,
   }) : super(const AuthState.initial()) {
     on<InitialAuthEvent>(_onInit);
-    on<SingInAnonymouslyEvent>(_onSingInAnonymously);
+    on<SingInAnonymouslyAuthEvent>(_onSingInAnonymously);
+    on<SignOutAuthEvent>(_onSignOut);
   }
   final AuthRepository authRepository;
 
@@ -30,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSingInAnonymously(
-    SingInAnonymouslyEvent event,
+    SingInAnonymouslyAuthEvent event,
     Emitter<AuthState> emit,
   ) async {
     emit(
@@ -38,6 +39,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         isLoading: true,
       ),
     );
-    authRepository.signInAnonymously();
+    await authRepository.signInAnonymously();
+  }
+
+  Future<void> _onSignOut(
+    SignOutAuthEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+      ),
+    );
+    await authRepository.signOut();
   }
 }

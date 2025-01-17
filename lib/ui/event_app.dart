@@ -1,8 +1,6 @@
 import 'package:event/data/repository/auth_repository_fire.dart';
-import 'package:event/domain/models/auth/user_app.dart';
 import 'package:event/internal/router/router_config.dart';
 import 'package:event/ui/auth/bloc/auth/auth_bloc.dart';
-import 'package:event/ui/home/home_page.dart';
 import 'package:event/ui/settings/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
