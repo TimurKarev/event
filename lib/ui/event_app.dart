@@ -26,7 +26,7 @@ class EventApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.green,
+              seedColor: Colors.amber,
             ),
             useMaterial3: true,
           ),
