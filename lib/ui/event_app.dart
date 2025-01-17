@@ -26,26 +26,11 @@ class EventApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple,
+              seedColor: Colors.green,
             ),
             useMaterial3: true,
           ),
           routerConfig: routerConfig(context.read<AuthBloc>()),
-          // home: BlocBuilder<AuthBloc, UserApp>(
-          //   builder: (context, state) {
-          //     if (state is UserUnregistered) {
-          //       return Center(
-          //         child: ElevatedButton(
-          //           onPressed: () => context.read<AuthBloc>().add(
-          //                 const SingInAnonymouslyEvent(),
-          //               ),
-          //           child: Text(state is UserRegistered ? 'Out' : 'Login'),
-          //         ),
-          //       );
-          //     }
-          //     return const HomePage();
-          //   },
-          // ),
         );
       }),
     );
