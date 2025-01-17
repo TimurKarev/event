@@ -1,5 +1,6 @@
 import 'package:event/data/repository/auth_repository_fire.dart';
 import 'package:event/domain/models/auth/user_app.dart';
+import 'package:event/internal/router/router_config.dart';
 import 'package:event/ui/auth/bloc/auth/auth_bloc.dart';
 import 'package:event/ui/home/home_page.dart';
 import 'package:event/ui/settings/bloc/settings_bloc.dart';
@@ -22,30 +23,33 @@ class EventApp extends StatelessWidget {
           create: (context) => SettingsBloc(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
+      child: Builder(builder: (context) {
+        return MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.deepPurple,
+            ),
+            useMaterial3: true,
           ),
-          useMaterial3: true,
-        ),
-        home: BlocBuilder<AuthBloc, UserApp>(
-          builder: (context, state) {
-            if (state is UserUnregistered) {
-              return Center(
-                child: ElevatedButton(
-                  onPressed: () => context.read<AuthBloc>().add(
-                        const SingInAnonymouslyEvent(),
-                      ),
-                  child: Text(state is UserRegistered ? 'Out' : 'Login'),
-                ),
-              );
-            }
-            return const HomePage();
-          },
-        ),
-      ),
+          routerConfig: routerConfig(context.read<AuthBloc>()),
+          // home: BlocBuilder<AuthBloc, UserApp>(
+          //   builder: (context, state) {
+          //     if (state is UserUnregistered) {
+          //       return Center(
+          //         child: ElevatedButton(
+          //           onPressed: () => context.read<AuthBloc>().add(
+          //                 const SingInAnonymouslyEvent(),
+          //               ),
+          //           child: Text(state is UserRegistered ? 'Out' : 'Login'),
+          //         ),
+          //       );
+          //     }
+          //     return const HomePage();
+          //   },
+          // ),
+        );
+      }),
     );
   }
 }
