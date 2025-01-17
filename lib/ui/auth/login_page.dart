@@ -9,11 +9,17 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          child: Text('LoginPage'),
-          onPressed: () => context.read<AuthBloc>().add(
-                const SingInAnonymouslyEvent(),
-              ),
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return ElevatedButton(
+              child: state.isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('LoginPage'),
+              onPressed: () => context.read<AuthBloc>().add(
+                    const SingInAnonymouslyEvent(),
+                  ),
+            );
+          },
         ),
       ),
     );

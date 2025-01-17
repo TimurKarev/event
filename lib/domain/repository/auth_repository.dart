@@ -5,5 +5,5 @@ abstract class AuthRepository {
 
   Future<void> signOut();
 
-  Future<UserApp> signInAnonymously();
+  Future<void> signInAnonymously();
 }

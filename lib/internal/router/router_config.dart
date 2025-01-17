@@ -26,7 +26,10 @@ GoRouter routerConfig(AuthBloc authBloc) => GoRouter(
     );
 
 FutureOr<String?> _redirect(BuildContext context, GoRouterState state) async {
-  final user = context.read<AuthBloc>().state;
+  final user = context.read<AuthBloc>().state.userApp;
+
+  final d = state.fullPath == PathConstants.loginScreen.path;
+  final s = user is UserRegistered;
 
   if (state.fullPath == PathConstants.loginScreen.path &&
       user is UserUnregistered) {
